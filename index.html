@@ -1,219 +1,309 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pokémon IRGK</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-<link rel="shortcut icon" href="imagens/pokebola.png" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PokemonIRGK - Explore o Universo Pokémon</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="icon" href="imagens/pokebola.png" type="image/png">
 </head>
 <body>
-  <header>
-    <h1>Pokémon IRGK</h1>
-  </header>
-
-  <nav>
-    <a href="#" onclick="showSection('pokedex')">Pokedex</a>
-    <a href="#" onclick="showSection('comparador')">Comparador</a>
-    <a href="#" onclick="showSection('simulador')">Simulador de Batalhas</a>
-    <a href="#" onclick="showSection('ataquedex')">Ataquedex</a>
-    <a href="#" onclick="showSection('items')">ITENS</a>
-    <a href="#" onclick="showSection('jogos')">JOGOS</a>
-    <a href="#" onclick="showSection('gym-leaders')">LÍDERES</a>
-    <a href="#" onclick="showSection('personagens')">PERSONAGENS</a>
-    <a href="#" onclick="showSection('estatisticas')">ESTATÍSTICAS</a>
-    <a href="#" onclick="showSection('quiz')">QUIZ</a>
-    
-
-  </nav>
-
-  <main>
-    <div class="section-container">
-      <!-- Pokedex -->
-      <div id="pokedex" class="content-section active">
-        <h2>POKEDEX</h2>
-        <input type="text" id="search-pokemon" placeholder="Nome ou ID do Pokémon">
-        
-        <div id="filter-section">
-          <br>
-          <label style="font-size: 1.3em; margin-top: 8vh;">Filtrar por Tipo:</label>
-          <div id="type-filter" class="type-buttons">
-            <button onclick="filterByType('all')" style="background-color: #ccc;">Todos</button>
-            <button onclick="filterByType('fire')" style="background-color: #F08030;">Fogo</button>
-            <button onclick="filterByType('water')" style="background-color: #6890F0;">Água</button>
-            <button onclick="filterByType('grass')" style="background-color: #78C850;">Grama</button>
-            <button onclick="filterByType('electric')" style="background-color: #F8D030;">Elétrico</button>
-            <button onclick="filterByType('ice')" style="background-color: #98D8D8;">Gelo</button>
-            <button onclick="filterByType('fighting')" style="background-color: #C03028;">Lutador</button>
-            <button onclick="filterByType('poison')" style="background-color: #A040A0;">Veneno</button>
-            <button onclick="filterByType('ground')" style="background-color: #E0C068;">Terra</button>
-            <button onclick="filterByType('flying')" style="background-color: #A890F0;">Voador</button>
-            <button onclick="filterByType('psychic')" style="background-color: #F85888;">Psíquico</button>
-            <button onclick="filterByType('bug')" style="background-color: #A8B820;">Inseto</button>
-            <button onclick="filterByType('rock')" style="background-color: #B8A038;">Pedra</button>
-            <button onclick="filterByType('ghost')" style="background-color: #705898;">Fantasma</button>
-            <button onclick="filterByType('dark')" style="background-color: #705848;">Sombrio</button>
-            <button onclick="filterByType('dragon')" style="background-color: #7038F8;">Dragão</button>
-            <button onclick="filterByType('steel')" style="background-color: #B8B8D0;">Aço</button>
-            <button onclick="filterByType('fairy')" style="background-color: #EE99AC;">Fada</button>
-            <button onclick="filterByType('normal')" style="background-color: #A8A878;">Normal</button>
-          </div>
-        </div>
-        <div id="pokemon-result"></div>
-        <button id="load-more-button" class="load-more">Carregar Mais</button>
-      </div>
-
-      <!-- Comparador -->
-      <div id="comparador" class="content-section">
-        <h2>COMPARADOR DE POKEMON</h2>
-        <input type="text" id="pokemon1" placeholder="Nome ou ID do Pokémon 1">
-        <button onclick="comparePokemon()">Comparar</button>
-        <input type="text" id="pokemon2" placeholder="Nome ou ID do Pokémon 2">
-        <div id="compare-result"></div>
-      </div>
-
-
-      <div id="simulador" class="content-section">
-
-        <h2>Simulador de Batalhas</h2>
-
-        <div class="container-form-battle">
-          <input type="text" id="battle-pokemon1" placeholder="Nome ou ID do Pokémon">
-          <button onclick="startBattle()">Iniciar Batalha</button>
-        </div>
-
-        <div class="container-battle">
-        <!-- Área de batalha -->
-        <div id="battle-area" class="battle-layout"></div>
-  
-        <!-- Menu de ataques -->
-        <div id="attack-menu" class="attack-menu" style="display: none;">
-          <h3>Escolha um ataque:</h3>
-          <div id="attack-options"></div>
-          <button id="attack-button" onclick="performAttack()" disabled>Atacar</button>
-        </div>
-  
-        <!-- Log da batalha -->
-        <div id="battle-log" class="battle-log"></div>
-      </div>
+    <!-- Loading Screen -->
+    <div class="loading-screen">
+        <div class="pokeball-loading"></div>
+        <p>Carregando...</p>
     </div>
 
+    <!-- Header -->
+    <header class="header">
+        <div class="logo-container">
+            <img src="imagens/pokebola  .png" alt="PokemonIRGK" class="logo">
+        </div>
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#pokedex" class="nav-link">Pokédex</a></li>
+                <li><a href="#battle" class="nav-link">Batalha</a></li>
+                <li><a href="#compare" class="nav-link">Comparar</a></li>
+                <li><a href="#quiz" class="nav-link">Quiz</a></li>
+                <li><a href="#items" class="nav-link">Itens</a></li>
+                <li><a href="#stats" class="nav-link">Estatísticas</a></li>
+            </ul>
+        </nav>
+        <div class="mobile-menu-btn">
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
 
-
-    <!-- Jogos Pokemon -->
-          <div class="section-container">
-            <div id="jogos" class="content-section">
-              <h2>Jogos Pokémon</h2>
-              <input type="text" id="searchInput" class="search-input" placeholder="Pesquise por jogo...">
-              <div id="gamesContainer" class="games-container"></div>
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <div class="hero">
+                <h1 class="title">Bem-vindo ao PokemonIRGK</h1>
+                <p class="subtitle">Explore o incrível universo Pokémon</p>
+                <div class="search-container">
+                    <input type="text" id="search-home" placeholder="Procure por Pokémon...">
+                    <button id="search-btn-home"><i class="fas fa-search"></i></button>
+                </div>
             </div>
-          </div>
-      
+            <div class="featured-pokemon">
+                <h2>Pokémon em Destaque</h2>
+                <div class="pokemon-grid" id="featured-grid">
+                    <!-- Featured Pokémon will be loaded here -->
+                </div>
+            </div>
+        </section>
 
-      <!-- Ataquedex -->
-      <div id="ataquedex" class="content-section">
-        <h2>ATTACKDEX</h2>
-        <input type="text" id="search-attack" placeholder="Buscar ataque por nome">
-        <button onclick="searchAttack()">Buscar</button>
-        <div id="attack-result"></div>
-        <button id="load-more-attack-button" class="load-more">Carregar Mais</button>
-      </div>
+        <!-- Pokédex Section -->
+        <section id="pokedex" class="section">
+            <h1 class="section-title">Pokédex</h1>
+            <div class="pokedex-container">
+                <div class="pokedex-controls">
+                    <div class="search-container">
+                        <input type="text" id="pokedex-search" placeholder="Nome ou Número...">
+                        <button id="pokedex-search-btn"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="filter-controls">
+                        <select id="type-filter">
+                            <option value="">Todos os Tipos</option>
+                            <!-- Types will be loaded here -->
+                        </select>
+                        <select id="generation-filter">
+                            <option value="">Todas as Gerações</option>
+                            <!-- Generations will be loaded here -->
+                        </select>
+                    </div>
+                </div>
+                <div class="pokedex-grid" id="pokedex-grid">
+                    <!-- Pokémon will be loaded here -->
+                </div>
+                <div class="pagination">
+                    <button id="prev-page" disabled>Anterior</button>
+                    <span id="page-info">Página 1</span>
+                    <button id="next-page">Próxima</button>
+                </div>
+            </div>
+        </section>
 
-      <!-- Seção de Items -->
-      <div id="items" class="content-section">
-        <h2>ITENS</h2>
-        <input type="text" id="search-item" placeholder="Procure itens...">
-        <div id="item-result"></div>
-        <button id="load-more-item-button" class="load-more">Carregar Mais</button>
-      </div>
-      
+        <!-- Battle Simulator Section -->
+        <section id="battle" class="section">
+            <h1 class="section-title">Simulador de Batalha</h1>
+            <div class="battle-container">
+                <div class="battle-arena">
+                    <div class="pokemon-battle pokemon1">
+                        <div class="pokemon-sprite"></div>
+                        <div class="pokemon-info">
+                            <h3 class="pokemon-name"></h3>
+                            <div class="health-bar">
+                                <div class="health-fill"></div>
+                                <span class="health-text"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vs">VS</div>
+                    <div class="pokemon-battle pokemon2">
+                        <div class="pokemon-sprite"></div>
+                        <div class="pokemon-info">
+                            <h3 class="pokemon-name"></h3>
+                            <div class="health-bar">
+                                <div class="health-fill"></div>
+                                <span class="health-text"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="battle-controls">
+                    <div class="pokemon-selector">
+                        <div class="selector selector1">
+                            <input type="text" placeholder="Escolha Pokémon 1" class="pokemon-select-input">
+                            <div class="pokemon-suggestions"></div>
+                        </div>
+                        <div class="selector selector2">
+                            <input type="text" placeholder="Escolha Pokémon 2" class="pokemon-select-input">
+                            <div class="pokemon-suggestions"></div>
+                        </div>
+                    </div>
+                    <button id="start-battle" class="btn">Começar Batalha</button>
+                    <div class="battle-log" id="battle-log">
+                        <!-- Battle messages will appear here -->
+                    </div>
+                </div>
+            </div>
+        </section>
 
-            
-          
-         <!-- Seção Líderes de Ginásio -->
-    <div id="gym-leaders" class="content-section">
-      <h2>LÍDERES DE GINÁSIO</h2>
-      <label for="type-filter-gym">Filtrar por Tipo:</label>
-      <select id="type-filter-gym">
-        <option value="Todos">Todos</option>
-        <option value="Pedra">Pedra</option>
-        <option value="Água">Água</option>
-        <option value="Elétrico">Elétrico</option>
-        <option value="Planta">Planta</option>
-        <option value="Venenoso">Venenoso</option>
-        <option value="Psíquico">Psíquico</option>
-        <option value="Fogo">Fogo</option>
-        <option value="Terra">Terra</option>
-        <option value="Voador">Voador</option>
-        <option value="Inseto">Inseto</option>
-        <option value="Normal">Normal</option>
-        <option value="Fantasma">Fantasma</option>
-        <option value="Lutador">Lutador</option>
-        <option value="Metal">Metal</option>
-        <option value="Gelo">Gelo</option>
-        <option value="Dragão">Dragão</option>
-      </select>
-      <div id="gym-leaders-display" class="gym-leaders-container"></div>
+        <!-- Compare Section -->
+        <section id="compare" class="section">
+            <h1 class="section-title">Comparador Pokémon</h1>
+            <div class="compare-container">
+                <div class="compare-pokemon compare1">
+                    <div class="compare-selector">
+                        <input type="text" placeholder="Selecione Pokémon 1" class="compare-input">
+                        <div class="compare-suggestions"></div>
+                    </div>
+                    <div class="compare-details">
+                        <!-- Pokémon 1 details will be loaded here -->
+                    </div>
+                </div>
+                <div class="compare-pokemon compare2">
+                    <div class="compare-selector">
+                        <input type="text" placeholder="Selecione Pokémon 2" class="compare-input">
+                        <div class="compare-suggestions"></div>
+                    </div>
+                    <div class="compare-details">
+                        <!-- Pokémon 2 details will be loaded here -->
+                    </div>
+                </div>
+            </div>
+            <div class="compare-stats-chart">
+                <canvas id="stats-chart"></canvas>
+            </div>
+        </section>
+
+        <!-- Quiz Section -->
+        <section id="quiz" class="section">
+            <h1 class="section-title">Quiz Pokémon</h1>
+            <div class="quiz-container">
+                <div class="quiz-start" id="quiz-start">
+                    <h2>Teste seu conhecimento Pokémon!</h2>
+                    <p>Responda perguntas sobre Pokémon e veja sua pontuação.</p>
+                    <div class="quiz-options">
+                        <select id="quiz-difficulty">
+                            <option value="easy">Fácil</option>
+                            <option value="medium">Médio</option>
+                            <option value="hard">Difícil</option>
+                        </select>
+                        <select id="quiz-category">
+                            <option value="general">Geral</option>
+                            <option value="types">Tipos</option>
+                            <option value="stats">Estatísticas</option>
+                            <option value="moves">Movimentos</option>
+                        </select>
+                    </div>
+                    <button id="start-quiz" class="btn">Começar Quiz</button>
+                </div>
+                <div class="quiz-game" id="quiz-game" style="display: none;">
+                    <div class="quiz-progress">
+                        <span id="quiz-progress-text">Pergunta 1/10</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                    </div>
+                    <div class="quiz-question" id="quiz-question">
+                        <!-- Question will be loaded here -->
+                    </div>
+                    <div class="quiz-options" id="quiz-options">
+                        <!-- Options will be loaded here -->
+                    </div>
+                    <button id="next-question" class="btn" style="display: none;">Próxima Pergunta</button>
+                </div>
+                <div class="quiz-result" id="quiz-result" style="display: none;">
+                    <h2 id="result-title">Quiz Concluído!</h2>
+                    <p id="result-score">Sua pontuação: <span>0</span>/10</p>
+                    <div class="result-details" id="result-details">
+                        <!-- Result details will be loaded here -->
+                    </div>
+                    <button id="restart-quiz" class="btn">Fazer Novamente</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Items Section -->
+        <section id="items" class="section">
+            <h1 class="section-title">Itens Pokémon</h1>
+            <div class="items-container">
+                <div class="items-search">
+                    <input type="text" id="items-search" placeholder="Procure por itens...">
+                    <button id="items-search-btn"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="items-filter">
+                    <select id="item-category-filter">
+                        <option value="">Todas as Categorias</option>
+                        <!-- Categories will be loaded here -->
+                    </select>
+                </div>
+                <div class="items-grid" id="items-grid">
+                    <!-- Items will be loaded here -->
+                </div>
+                <div class="items-pagination">
+                    <button id="items-prev" disabled>Anterior</button>
+                    <span id="items-page-info">Página 1</span>
+                    <button id="items-next">Próxima</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section id="stats" class="section">
+            <h1 class="section-title">Estatísticas Pokémon</h1>
+            <div class="stats-container">
+                <div class="stats-search">
+                    <input type="text" id="stats-search" placeholder="Nome ou Número do Pokémon...">
+                    <button id="stats-search-btn"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="stats-results" id="stats-results">
+                    <!-- Pokémon stats will be displayed here -->
+                </div>
+                <div class="stats-charts">
+                    <div class="chart-container">
+                        <canvas id="base-stats-chart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="type-effectiveness-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Pokémon Details Modal -->
+    <div class="modal" id="pokemon-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-body" id="modal-body">
+                <!-- Pokémon details will be loaded here -->
+            </div>
+        </div>
     </div>
-    
-    <!-- Seção de Personagens -->
-    <div id="personagens" class="content-section">
-      <h2>PERSONAGENS</h2>
-      <div class="search-container">
-        <input type="text" id="searchinput" placeholder="Buscar personagem...">
-      </div>
-      <div id="charactersContainer" class="characters-container"></div>
-    </div>
 
-    <!-- Estatísticas do Pokémon -->
-    <div id="estatisticas" class="content-section">
-      <h2>Estatísticas do Pokémon</h2>
-      <input type="text" id="pokemon-search" placeholder="Digite o nome ou ID do Pokémon">
-      <button id="search-button">Buscar</button>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Sobre</h3>
+                <p>PokemonIRGK é um site não-oficial criado por Isaac Amorim e Guilherme Caetano. Todos os dados são fornecidos pela PokeAPI.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Links Úteis</h3>
+                <ul>
+                    <li><a href="https://pokeapi.co/" target="_blank">PokeAPI</a></li>
+                    <li><a href="https://www.pokemon.com/br/" target="_blank">Site Oficial Pokémon</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contato</h3>
+                <p>contato@pokemonIRGK.com</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 PokemonIRGK. Não afiliado à Nintendo, Game Freak ou The Pokémon Company.</p>
+        </div>
+    </footer>
 
-      
-      <!-- Área onde as informações do Pokémon serão exibidas -->
-      <div id="pokemon-stats"></div>
-    </div>
-        <!-- Seção de Quiz -->
-    <div id="quiz" class="content-section">
-      <h2>Desafio Pokémon</h2>
-      <p style="font-size: 1.5em; color: #ffd92d;">Qual é esse Pokémon?</p>
-      <img id="pokemon-image" src="" alt="Pokémon" style="width: 150px; height: 150px; margin-bottom: 20px;">
-      <div id="feedback" style="color: green; font-weight: bold;"></div>
-      <div id="feedback-error" style="color: red; font-weight: bold;"></div>
-      <input type="text" id="guess-input" placeholder="Digite o nome do Pokémon" style="padding: 10px; margin-bottom: 10px;">
-      <button onclick="handleGuess()">Verificar</button>
-      <button onclick="fetchRandomPokemon()">Trocar Pokémon</button>
-</div>
-
-  </div>
-
-    
-</main>
-
-  <footer>
-    <p>© 2024 Pokémon Battle Guide. Todos os direitos reservados.</p>
-  </footer>
-
-  <!-- Importação dos scripts -->
-  
-  <script src="scripts/main.js"></script>
-  <script src="scripts/pokedex.js"></script>
-  <script src="scripts/comparador.js"></script>
-  <script src="scripts/simulador.js"></script>
-  <script src="scripts/ataquedex.js"></script>
-  <script src="scripts/items.js"></script>
-  <script src="scripts/jogos.js"></script>
-  <script src="scripts/gymLeaders.js"></script>
-  <script src="scripts/personagens.js"></script>
-  <script src="scripts/estatisticas.js"></script>
-  <script src="scripts/quiz.js"></script>
-
-
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/pokedex.js"></script>
+    <script src="js/battle.js"></script>
+    <script src="js/compare.js"></script>
+    <script src="js/quiz.js"></script>
+    <script src="js/items.js"></script>
+    <script src="js/stats.js"></script>
 </body>
 </html>
