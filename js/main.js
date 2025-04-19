@@ -331,7 +331,7 @@ async function loadGenerations() {
   }
 }
 
-// main.js - Evento de redimensionamento
+
 window.addEventListener('resize', function() {
     // Redimensiona gráficos se existirem
     if (typeof baseStatsChart !== 'undefined' && baseStatsChart) {
@@ -340,7 +340,7 @@ window.addEventListener('resize', function() {
     if (typeof typeEffectivenessChart !== 'undefined' && typeEffectivenessChart) {
         typeEffectivenessChart.resize();
     }
-    if (typeof statsChart !== 'undefined' && statsChart) { // Só se realmente existir
+    if (typeof statsChart !== 'undefined' && statsChart) { 
         statsChart.resize();
     }
 });

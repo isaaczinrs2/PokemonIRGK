@@ -487,9 +487,67 @@ button {
   font-family: monospace;
 }
 
-.battle-message {
-  margin-bottom: 5px;
-  animation: fadeIn 0.3s ease;
+/* Adicione isso ao seu arquivo CSS */
+.move-name {
+  color: #3b4cca;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.damage-amount {
+  font-weight: bold;
+}
+
+.battle-message.damage {
+  color: #e53935;
+}
+
+.battle-message.critical-hit {
+  color: #d81b60;
+  font-weight: bold;
+  animation: flashRed 0.3s;
+}
+
+.battle-message.critical-damage {
+  color: #d81b60;
+  font-weight: bold;
+}
+
+.battle-message.knockout {
+  background-color: #d81b60;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+.battle-message.victory {
+  background-color: #43a047;
+  color: white;
+  font-size: 1.1em;
+  padding: 8px 12px;
+  border-radius: 4px;
+  animation: pulse 0.5s;
+}
+
+@keyframes flashRed {
+  0%, 100% { background-color: transparent; }
+  50% { background-color: rgba(216, 27, 96, 0.3); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-5px); }
+  40%, 80% { transform: translateX(5px); }
+}
+
+@keyframes flashRed {
+  0%, 100% { background-color: transparent; }
+  50% { background-color: rgba(255, 0, 0, 0.2); }
 }
 
 /* Compare Section */

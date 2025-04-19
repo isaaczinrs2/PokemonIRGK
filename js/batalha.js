@@ -91,6 +91,19 @@ document.addEventListener('DOMContentLoaded', function() {
             addBattleMessage(`Erro ao carregar Pokémon. Tente novamente.`);
         }
     }
+
+    function addBattleMessage(message, className = '') {
+        const messageElement = document.createElement('div');
+        messageElement.className = `battle-message ${className}`;
+        messageElement.innerHTML = message;  // Usamos innerHTML para permitir tags HTML
+        battleLog.appendChild(messageElement);
+        
+        // Rolagem automática para a mensagem mais recente
+        battleLog.scrollTop = battleLog.scrollHeight;
+        
+        // Adiciona animação
+        messageElement.style.animation = 'fadeIn 0.3s ease';
+    }
     
     // Update Pokémon display in battle arena
     function updatePokemonDisplay(pokemon, position) {
@@ -149,7 +162,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Battle round
     function battleRound(attacker, defender) {
         if (!battleInProgress) return;
-        
+    
         // Attacker selects a random move
         const moves = attacker.pokemon.moves.filter(move => move.version_group_details[0].level_learned_at > 0);
         if (moves.length === 0) {
@@ -157,32 +170,43 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => battleRound(defender, attacker), 1500);
             return;
         }
-        
+    
         const randomMove = moves[Math.floor(Math.random() * moves.length)];
         const moveName = randomMove.move.name.replace('-', ' ');
-        
+    
+        // Mensagem de ataque formatada
         addBattleMessage(`${attacker.pokemon.name} usou ${moveName}!`);
-        
+    
         // Animate attack
         const attackerSprite = attacker.position === 1 ? pokemon1Sprite : pokemon2Sprite;
         attackerSprite.classList.add('attack-animation');
-        
+    
         setTimeout(() => {
             attackerSprite.classList.remove('attack-animation');
-            
-            // Calculate damage (simplified)
+    
+            // Calculate damage
             const attackStat = attacker.pokemon.stats.find(stat => stat.stat.name === 'attack').base_stat;
             const defenseStat = defender.pokemon.stats.find(stat => stat.stat.name === 'defense').base_stat;
             
-            // Simple damage calculation (this could be much more complex with types, etc.)
-            let damage = Math.max(1, Math.floor((attackStat / defenseStat) * 20));
+            // Damage calculation with random variation
+            let damage = Math.max(1, Math.floor((attackStat / defenseStat) * 20 * (0.8 + Math.random() * 0.4)));
+
             
-            // Random variation
-            damage = Math.floor(damage * (0.8 + Math.random() * 0.4));
-            
+    
             // Apply damage
             applyDamage(defender.position, damage);
+
+            const isCritical = Math.random() < 0.1; // 10% chance de crítico
+            if (isCritical) {
+                damage = Math.floor(damage * 1.5);
+                addBattleMessage(`Golpe crítico!`, 'critical-hit');
+            }
+            // Mensagem de dano
+            addBattleMessage(`${defender.pokemon.name} sofreu ${damage} de dano!`, 'damage');
+
             
+            
+                
             // Check if battle is over
             setTimeout(() => {
                 const defenderHealth = defender.position === 1 ? 
@@ -191,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 if (defenderHealth <= 0) {
                     battleInProgress = false;
-                    addBattleMessage(`${defender.pokemon.name} foi derrotado!`);
+                    addBattleMessage(`${defender.pokemon.name} foi derrotado!`, 'damage');
                     addBattleMessage(`${attacker.pokemon.name} venceu a batalha!`, 'victory');
                     startBattleBtn.disabled = false;
                     return;
