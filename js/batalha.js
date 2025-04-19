@@ -255,8 +255,8 @@ document.addEventListener('DOMContentLoaded', function() {
         ];
         
         // Set placeholder text with random Pokémon
-        pokemon1Input.placeholder = `Ex: bulbasaur, ${randomIds[0]}`;
-        pokemon2Input.placeholder = `Ex: charmander, ${randomIds[1]}`;
+        pokemon1Input.placeholder = `Ex: bulbasaur`;
+        pokemon2Input.placeholder = `Ex: charmander`;
         
         // Disable battle button initially
         startBattleBtn.disabled = true;

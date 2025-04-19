@@ -374,10 +374,12 @@ button {
   margin-bottom: 2rem;
   position: relative;
   min-height: 300px;
-  background: url('../images/battle-bg.jpg') no-repeat center center/cover;
+  background: url('../imagens/batalhabg.jpeg') no-repeat center center/cover;
   border-radius: var(--border-radius);
   padding: 2rem;
 }
+
+
 
 .pokemon-battle {
   text-align: center;
@@ -532,12 +534,65 @@ button {
   display: none;
 }
 
-.compare-stats-chart {
-  background-color: var(--card-bg);
-  border-radius: var(--border-radius);
-  padding: 2rem;
-  box-shadow: var(--shadow);
-  margin-top: 2rem;
+/* Container dos gráficos */
+.compare-stats-chart, 
+.stats-charts {
+    position: relative;
+    width: 100%;
+    min-height: 300px;
+}
+
+/* Ajustes para telas pequenas */
+@media (max-width: 768px) {
+    .compare-container {
+        flex-direction: column;
+    }
+    
+    .compare-pokemon {
+        width: 100%;
+    }
+    
+    .compare-stats-chart {
+        margin-top: 1rem;
+    }
+    
+    .stats-charts {
+        grid-template-columns: 1fr;
+    }
+    
+    .chart-container {
+        height: 300px;
+    }
+    
+    /* Ajuste para legendas em telas pequenas */
+    .chartjs-legend {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .chartjs-legend-item {
+        margin: 5px 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .chart-container {
+        height: 250px;
+    }
+    
+    /* Reduzir padding para economizar espaço */
+    .modal-body {
+        padding: 1rem;
+    }
+    
+    .pokemon-detail-header {
+        flex-direction: column;
+    }
+    
+    .pokemon-detail-info {
+        min-width: 100%;
+    }
 }
 
 /* Quiz Section */
@@ -794,15 +849,25 @@ button {
 
 .stats-charts {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 2rem;
+  margin-top: 2rem;
 }
 
 .chart-container {
-  background-color: white;
-  border-radius: var(--border-radius);
-  padding: 1.5rem;
-  box-shadow: var(--shadow);
+  position: relative;
+  height: 300px;
+  width: 100%;
+}
+
+@media (min-width: 992px) {
+  .stats-charts {
+      grid-template-columns: 1fr 1fr;
+  }
+  
+  .chart-container {
+      height: 400px;
+  }
 }
 
 /* Modal */
@@ -1143,5 +1208,48 @@ button {
   
   .pokemon-selector {
       flex-direction: column;
+  }
+}
+
+/* Melhorias na responsividade */
+@media (max-width: 768px) {
+  .stats-header {
+      flex-direction: column;
+      text-align: center;
+  }
+  
+  .stats-basic-info {
+      margin-top: 1rem;
+  }
+  
+  .stats-pokemon-details {
+      justify-content: center;
+  }
+  
+  .pokemon-detail-header {
+      flex-direction: column;
+      text-align: center;
+  }
+  
+  .pokemon-detail-img {
+      margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .section-title {
+      font-size: 1.5rem;
+  }
+  
+  .hero {
+      padding: 1.5rem 1rem;
+  }
+  
+  .title {
+      font-size: 2rem;
+  }
+  
+  .search-container {
+      width: 100%;
   }
 }

@@ -47,34 +47,40 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // Home search functionality
-  const homeSearchBtn = document.getElementById('search-btn-home');
-  const homeSearchInput = document.getElementById('search-home');
-  
-  homeSearchBtn.addEventListener('click', searchPokemon);
-  homeSearchInput.addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') {
-          searchPokemon();
-      }
-  });
+  // Home search functionality
+const homeSearchBtn = document.getElementById('search-btn-home');
+const homeSearchInput = document.getElementById('search-home');
 
-  function searchPokemon() {
-      const searchTerm = homeSearchInput.value.trim().toLowerCase();
-      if (searchTerm) {
-          // Switch to Pokédex section
-          document.querySelector('.nav-link.active').classList.remove('active');
-          document.querySelector('.section.active').classList.remove('active');
-          
-          document.querySelector('a[href="#pokedex"]').classList.add('active');
-          document.querySelector('#pokedex').classList.add('active');
-          
-          // Set search term in Pokédex search
-          const pokedexSearch = document.getElementById('pokedex-search');
-          pokedexSearch.value = searchTerm;
-          
-          // Trigger search
-          searchPokedex(searchTerm);
-      }
-  }
+homeSearchBtn.addEventListener('click', () => searchPokemon(homeSearchInput.value));
+homeSearchInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        searchPokemon(this.value);
+    }
+});
+
+// Função searchPokemon atualizada
+async function searchPokemon(searchTerm = '') {
+    searchTerm = String(searchTerm || '').trim();
+    if (!searchTerm) return;
+
+    try {
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${searchTerm.toLowerCase()}`);
+        const pokemon = await response.json();
+        showPokemonDetails(pokemon.id);
+    } catch (error) {
+        console.error('Error searching Pokémon:', error);
+        // Vai para a Pokédex se não encontrar
+        document.querySelector('.nav-link.active').classList.remove('active');
+        document.querySelector('.section.active').classList.remove('active');
+        
+        document.querySelector('a[href="#pokedex"]').classList.add('active');
+        document.querySelector('#pokedex').classList.add('active');
+        
+        const pokedexSearch = document.getElementById('pokedex-search');
+        pokedexSearch.value = searchTerm;
+        searchPokedex(searchTerm);
+    }
+}
 
   // Load Pokémon types for filters
   loadPokemonTypes();
@@ -324,3 +330,17 @@ async function loadGenerations() {
       console.error('Error loading generations:', error);
   }
 }
+
+// main.js - Evento de redimensionamento
+window.addEventListener('resize', function() {
+    // Redimensiona gráficos se existirem
+    if (typeof baseStatsChart !== 'undefined' && baseStatsChart) {
+        baseStatsChart.resize();
+    }
+    if (typeof typeEffectivenessChart !== 'undefined' && typeEffectivenessChart) {
+        typeEffectivenessChart.resize();
+    }
+    if (typeof statsChart !== 'undefined' && statsChart) { // Só se realmente existir
+        statsChart.resize();
+    }
+});

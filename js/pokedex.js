@@ -125,72 +125,117 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   // Search Pokédex
-  function searchPokedex() {
-      const searchTerm = pokedexSearch.value.trim().toLowerCase();
-      
-      if (searchTerm) {
-          // Direct search by ID or name
-          const foundPokemon = allPokemon.find(pokemon => 
-              pokemon.name.toLowerCase() === searchTerm || 
-              pokemon.id.toString() === searchTerm
-          );
-          
-          if (foundPokemon) {
-              showPokemonDetails(foundPokemon.id);
-              return;
-          }
-      }
-      
-      // If no direct match, filter the list
-      filterPokemon();
-  }
+  function searchPokedex(searchTerm = '') {
+    // Garante que searchTerm é uma string
+    searchTerm = String(searchTerm || pokedexSearch.value).trim().toLowerCase();
+    
+    if (searchTerm) {
+        // Check if search term is a number (ID)
+        if (/^\d+$/.test(searchTerm)) {
+            const id = parseInt(searchTerm);
+            const foundPokemon = allPokemon.find(p => p.id === id);
+            
+            if (foundPokemon) {
+                showPokemonDetails(foundPokemon.id);
+                return;
+            }
+        }
+        
+        // Check for exact name match
+        const foundPokemon = allPokemon.find(p => 
+            p.name.toLowerCase() === searchTerm
+        );
+        
+        if (foundPokemon) {
+            showPokemonDetails(foundPokemon.id);
+            return;
+        }
+    }
+    
+    // If no direct match, filter the list
+    filterPokemon();
+}
   
   // Filter Pokémon based on search and filters
-  function filterPokemon() {
-      const searchTerm = pokedexSearch.value.trim().toLowerCase();
-      const typeFilterValue = typeFilter.value;
-      const generationFilterValue = generationFilter.value;
-      
-      filteredPokemon = allPokemon.filter(pokemon => {
-          // Filter by search term
-          if (searchTerm && 
-              !pokemon.name.includes(searchTerm) && 
-              !pokemon.id.toString().includes(searchTerm)) {
-              return false;
-          }
-          
-          // Filter by generation
-          if (generationFilterValue) {
-              const genRanges = {
-                  '1': { min: 1, max: 151 },
-                  '2': { min: 152, max: 251 },
-                  '3': { min: 252, max: 386 },
-                  '4': { min: 387, max: 493 },
-                  '5': { min: 494, max: 649 },
-                  '6': { min: 650, max: 721 },
-                  '7': { min: 722, max: 809 },
-                  '8': { min: 810, max: 905 },
-                  '9': { min: 906, max: 1025 }
-              };
-              
-              const range = genRanges[generationFilterValue];
-              if (pokemon.id < range.min || pokemon.id > range.max) {
-                  return false;
-              }
-          }
-          
-          return true;
-      });
-      
-      // Reset to first page
-      currentPage = 1;
-      loadPokemonPage(currentPage);
-      
-      // Type filtering is done after loading because we need the Pokémon details
-      if (typeFilterValue) {
-          filterByType(typeFilterValue);
-      }
-  }
+  async function filterPokemon() {
+    const searchTerm = pokedexSearch.value.trim().toLowerCase();
+    const typeFilterValue = typeFilter.value;
+    const generationFilterValue = generationFilter.value;
+    
+    // Reset filtered Pokémon
+    filteredPokemon = [...allPokemon];
+    
+    // Filter by search term
+    if (searchTerm) {
+        filteredPokemon = filteredPokemon.filter(pokemon => 
+            pokemon.name.includes(searchTerm) || 
+            pokemon.id.toString().includes(searchTerm)
+        );
+    }
+    
+    // Filter by generation
+    if (generationFilterValue) {
+        const genRanges = {
+            '1': { min: 1, max: 151 },
+            '2': { min: 152, max: 251 },
+            '3': { min: 252, max: 386 },
+            '4': { min: 387, max: 493 },
+            '5': { min: 494, max: 649 },
+            '6': { min: 650, max: 721 },
+            '7': { min: 722, max: 809 },
+            '8': { min: 810, max: 905 },
+            '9': { min: 906, max: 1025 }
+        };
+        
+        const range = genRanges[generationFilterValue];
+        filteredPokemon = filteredPokemon.filter(pokemon => 
+            pokemon.id >= range.min && pokemon.id <= range.max
+        );
+    }
+    
+    // Reset to first page
+    currentPage = 1;
+    
+    // Load Pokémon with type filter if selected
+    if (typeFilterValue) {
+        await loadPokemonWithTypeFilter(typeFilterValue);
+    } else {
+        loadPokemonPage(currentPage);
+    }
+}
+
+async function loadPokemonWithTypeFilter(type) {
+    try {
+        // Show loading state
+        pokedexGrid.innerHTML = '<div class="loader">Carregando...</div>';
+        
+        // Fetch details for all filtered Pokémon to check their types
+        const pokemonPromises = filteredPokemon.map(pokemon => 
+            fetch(pokemon.url).then(response => response.json())
+        );
+        
+        const pokemonDetails = await Promise.all(pokemonPromises);
+        
+        // Filter by type
+        const typeFilteredPokemon = pokemonDetails.filter(pokemon => 
+            pokemon.types.some(t => t.type.name === type)
+        );
+        
+        // Update filtered list with only Pokémon of the selected type
+        filteredPokemon = typeFilteredPokemon.map(pokemon => ({
+            name: pokemon.name,
+            url: `https://pokeapi.co/api/v2/pokemon/${pokemon.id}`,
+            id: pokemon.id
+        }));
+        
+        // Load first page
+        loadPokemonPage(currentPage);
+        
+    } catch (error) {
+        console.error('Error filtering by type:', error);
+        pokedexGrid.innerHTML = '<p>Erro ao filtrar por tipo. Tente novamente.</p>';
+    }
+}
   
   // Filter Pokémon by type (needs to be done after loading)
   async function filterByType(type) {

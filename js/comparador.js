@@ -115,63 +115,70 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Update stats comparison chart
   function updateStatsChart() {
-      const statsLabels = pokemon1.stats.map(stat => stat.stat.name);
-      const stats1 = pokemon1.stats.map(stat => stat.base_stat);
-      const stats2 = pokemon2.stats.map(stat => stat.base_stat);
-      
-      const chartData = {
-          labels: statsLabels,
-          datasets: [
-              {
-                  label: pokemon1.name,
-                  data: stats1,
-                  backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                  borderColor: 'rgba(255, 99, 132, 1)',
-                  borderWidth: 1
-              },
-              {
-                  label: pokemon2.name,
-                  data: stats2,
-                  backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                  borderColor: 'rgba(54, 162, 235, 1)',
-                  borderWidth: 1
-              }
-          ]
-      };
-      
-      const chartOptions = {
-          responsive: true,
-          scales: {
-              y: {
-                  beginAtZero: true
-              }
-          },
-          plugins: {
-              title: {
-                  display: true,
-                  text: 'Comparação de Estatísticas',
-                  font: {
-                      size: 16
-                  }
-              },
-              legend: {
-                  position: 'top'
-              }
-          }
-      };
-      
-      // Destroy previous chart if it exists
-      if (statsChart) {
-          statsChart.destroy();
-      }
-      
-      // Create new chart
-      statsChart = new Chart(statsChartCanvas, {
-          type: 'bar',
-          data: chartData,
-          options: chartOptions
-      });
-  }
+    if (!pokemon1 || !pokemon2) return;
+
+    // Destruir gráfico anterior se existir
+    if (statsChart) {
+        statsChart.destroy();
+    }
+
+    const ctx = statsChartCanvas.getContext('2d');
+    const statsLabels = pokemon1.stats.map(stat => stat.stat.name);
+    const stats1 = pokemon1.stats.map(stat => stat.base_stat);
+    const stats2 = pokemon2.stats.map(stat => stat.base_stat);
+
+    statsChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: statsLabels,
+            datasets: [
+                {
+                    label: pokemon1.name,
+                    data: stats1,
+                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: pokemon2.name,
+                    data: stats2,
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        boxWidth: 20,
+                        padding: 10,
+                        font: {
+                            size: 12
+                        }
+                    }
+                }
+            },
+            layout: {
+                padding: {
+                    left: 10,
+                    right: 10,
+                    top: 10,
+                    bottom: 10
+                }
+            }
+        }
+    });
+}
   
   // Initialize comparator
   function initComparator() {
@@ -189,7 +196,7 @@ document.addEventListener('DOMContentLoaded', function() {
       ];
       
       // Set placeholder text with random Pokémon
-      compareInput1.placeholder = `Ex: bulbasaur, ${randomIds[0]}`;
-      compareInput2.placeholder = `Ex: charmander, ${randomIds[1]}`;
+      compareInput1.placeholder = `Ex: bulbasaur`;
+      compareInput2.placeholder = `Ex: charmander`;
   }
 });
